@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["martindeegan <mddeegan@gmail.com>"]
 
 [dependencies]
-rust_pigpio = { path = "../", version = "^0.1.0" }
+rust_pigpio = { path = "../../", version = "0.1.0" }
 
 [[bin]]
 name = "light"
