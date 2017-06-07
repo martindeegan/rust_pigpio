@@ -7,7 +7,6 @@ homepage = "https://github.com/martindeegan/rust_pigpio"
 repository = "https://github.com/martindeegan/rust_pigpio"
 keywords = ["raspberry", "pi", "gpio", "wrapper", "library"]
 categories = ["hardware-support", "external-ffi-bindings", "api-bindings"]
-license = "MIT License"
-license-file = "license"
+license = "MIT"
 
 [dependencies]
