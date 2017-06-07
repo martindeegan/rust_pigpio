@@ -23,6 +23,4 @@ sudo apt-get install pigpio
 
 ## Add to rust project
 
-~~~
-rust-pigpio = "0.1.2"
-~~~
+https://crates.io/crates/rust-pigpio
