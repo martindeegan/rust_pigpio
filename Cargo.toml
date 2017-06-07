@@ -1,6 +1,6 @@
 [package]
 name = "rust-pigpio"
-version = "0.1.2"
+version = "0.1.3"
 authors = ["martindeegan <mddeegan@gmail.com>"]
 description = "Rust wrapper for PiGPIO C library."
 homepage = "https://github.com/martindeegan/rust_pigpio"
