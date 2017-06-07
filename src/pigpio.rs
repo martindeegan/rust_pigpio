@@ -199,7 +199,7 @@ pub fn initialize() -> GpioResponse {
     let result = unsafe { gpioInitialise() };
     match result {
         PI_INIT_FAILED => Err("Initialize failed".to_string()),
-        _ => Ok(result)
+        _ => Ok(result as u32)
     }
 
 }
