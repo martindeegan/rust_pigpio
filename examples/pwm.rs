@@ -8,7 +8,7 @@ const PIN: u32 = 21;
 
 fn main() {
     println!("Initialized pigpio. Version: {}", initialize().unwrap());
-    set_mode(PIN, PI_OUTPUT).unwrap();
+    set_mode(PIN, MODE_OUTPUT).unwrap();
     println!("Mode set!");
     write(PIN, 0).unwrap();
     pwm(PIN, 30).unwrap();

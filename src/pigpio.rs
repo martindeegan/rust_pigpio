@@ -173,21 +173,18 @@ const PI_BAD_SPI_BAUD: i32 = -141;
 const PI_NOT_SPI_GPIO: i32 = -142;
 const PI_BAD_EVENT_ID: i32 = -143;
 
-/// Modes
-pub const PI_INPUT: u32 = 0;
-pub const PI_OUTPUT: u32 = 1;
-pub const ALT0: u32 = 4;
-pub const ALT1: u32 = 5;
-pub const ALT2: u32 = 6;
-pub const ALT3: u32 = 7;
-pub const ALT4: u32 = 3;
-pub const ALT5: u32 = 2;
+pub const MODE_INPUT: u32 = 0;
+pub const MODE_OUTPUT: u32 = 1;
+pub const MODE_ALT0: u32 = 4;
+pub const MODE_ALT1: u32 = 5;
+pub const MODE_ALT2: u32 = 6;
+pub const MODE_ALT3: u32 = 7;
+pub const MODE_ALT4: u32 = 3;
+pub const MODE_ALT5: u32 = 2;
 
-/// Values
 pub const PI_ON: u32 = 1;
 pub const PI_OFF: u32 = 0;
 
-/// Responses
 pub type GpioResult = Result<(), String>;
 pub type GpioResponse = Result<u32, String>;
 
