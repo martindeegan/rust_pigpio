@@ -1,6 +1,11 @@
 [package]
-name = "rust_pigpio"
+name = "rust-pigpio"
 version = "0.1.0"
 authors = ["martindeegan <mddeegan@gmail.com>"]
+description = "Rust wrapper for PiGPIO C library."
+homepage = "https://github.com/martindeegan/rust_pigpio"
+repository = "https://github.com/martindeegan/rust_pigpio"
+keywords = ["raspberry", "pi", "gpio", "wrapper", "library"]
+categories = ["hardware-support", "external-ffi-bindings", "api-bindings"]
 
 [dependencies]
