@@ -195,12 +195,13 @@ const DEFAULT_ERROR: &str = "Unknown error.";
 
 /// Initialises the library.
 /// gpioInitialise must be called before using the other library functions with some exceptions not yet wrapped.
-pub fn initialize() -> GpioResult {
-    match unsafe { gpioInitialise() } {
-        OK => Ok(()),
+pub fn initialize() -> GpioResponse {
+    let result = unsafe { gpioInitialise() };
+    match result {
         PI_INIT_FAILED => Err("Initialize failed".to_string()),
-        _ => Err(DEFAULT_ERROR.to_string()),
+        _ => Ok(result)
     }
+
 }
 
 /// Terminates the library.

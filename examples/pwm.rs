@@ -7,8 +7,7 @@ use rust_pigpio::pigpio::*;
 const PIN: u32 = 21;
 
 fn main() {
-    initialize();
-    println!("Initialized!");
+    println!("Initialized pigpio. Version: {}", initialize().unwrap());
     set_mode(PIN, PI_OUTPUT).unwrap();
     println!("Mode set!");
     write(PIN, 0).unwrap();
