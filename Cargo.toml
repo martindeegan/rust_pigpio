@@ -9,4 +9,16 @@ keywords = ["raspberry", "pi", "gpio", "wrapper", "library"]
 categories = ["hardware-support", "external-ffi-bindings", "api-bindings"]
 license = "MIT"
 
+[lib]
+name = "rust_pigpio"
+crate-type = ["lib"]
+doc = true
+
+[[example]]
+name = "light"
+crate-type = ["bin"]
+
+[[example]]
+name = "pwm"
+crate-type = ["bin"]
 
