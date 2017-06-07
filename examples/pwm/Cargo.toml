@@ -1,5 +1,5 @@
 [package]
-name = "examples"
+name = "pwm"
 version = "0.1.0"
 authors = ["martindeegan <mddeegan@gmail.com>"]
 
@@ -7,5 +7,5 @@ authors = ["martindeegan <mddeegan@gmail.com>"]
 rust_pigpio = { path = "../../", version = "0.1.0" }
 
 [[bin]]
-name = "light"
-path = "light.rs"
+name = "pwm"
+path = "pwm.rs"

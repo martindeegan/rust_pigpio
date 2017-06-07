@@ -5,8 +5,9 @@ use rust_pigpio::pigpio::*;
 
 const PIN: u32 = 21;
 
+//Turns light on and off
 fn main() {
-  initialize();
+  initialize().unwrap();
   setMode(PIN, PI_OUTPUT).unwrap();
   write(PIN, 1).unwrap();
   sleep(std::time::Duration::from_secs(1));
@@ -15,6 +16,5 @@ fn main() {
   write(PIN, 1).unwrap();
   sleep(std::time::Duration::from_secs(1));
   write(PIN, 0).unwrap();
-  sleep(std::time::Duration::from_secs(1));
   terminate();
 }
