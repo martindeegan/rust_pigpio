@@ -49,7 +49,8 @@ extern "C" {
 
 
 /// Initializes the library.
-/// gpioInitialize must be called before using the other library functions with some exceptions not yet wrapped.
+///
+/// Initialize must be called before using the other library functions with some exceptions not yet wrapped.
 pub fn initialize() -> GpioResponse {
     let result = unsafe { gpioInitialise() };
     match result {
@@ -60,6 +61,7 @@ pub fn initialize() -> GpioResponse {
 }
 
 /// Terminates the library.
+/// 
 /// Call before program exit.
 /// This function resets the used DMA channels, releases memory, and terminates any running threads.
 pub fn terminate() {
