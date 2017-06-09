@@ -22,6 +22,12 @@ const BAD_LEVEL: i32 = -5;
 const BAD_PUD: i32 = -6;
 const DEFAULT_ERROR: &str = "Unknown error.";
 
+pub const INPUT: GpioMode = GpioMode::INPUT;
+pub const OUTPUT: GpioMode = GpioMode::OUTPUT;
+
+pub const ON: Level = Level::ON;
+pub const OFF: Level = Level::OFF;
+
 pub type GpioResult = Result<(), String>;
 pub type GpioResponse = Result<u32, String>;
 
@@ -61,7 +67,7 @@ pub fn initialize() -> GpioResponse {
 }
 
 /// Terminates the library.
-/// 
+///
 /// Call before program exit.
 /// This function resets the used DMA channels, releases memory, and terminates any running threads.
 pub fn terminate() {

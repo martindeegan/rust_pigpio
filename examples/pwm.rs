@@ -2,15 +2,16 @@ extern crate rust_pigpio;
 
 use std::thread::sleep;
 use std::time::Duration;
+use rust_pigpio::*;
 use rust_pigpio::pwm::*;
 
 const PIN: u32 = 21;
 
 fn main() {
     println!("Initialized pigpio. Version: {}", initialize().unwrap());
-    set_mode(PIN, MODE_OUTPUT).unwrap();
+    set_mode(PIN, OUTPUT).unwrap();
     println!("Mode set!");
-    write(PIN, 0).unwrap();
+    write(PIN, OFF).unwrap();
     pwm(PIN, 30).unwrap();
     sleep(Duration::from_secs(2));
     pwm(PIN, 50).unwrap();
