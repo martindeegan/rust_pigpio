@@ -1,6 +1,6 @@
 [package]
 name = "rust-pigpio"
-version = "0.1.3"
+version = "0.2.0"
 authors = ["martindeegan <mddeegan@gmail.com>"]
 description = "Rust wrapper for PiGPIO C library."
 homepage = "https://github.com/martindeegan/rust_pigpio"
@@ -21,4 +21,3 @@ crate-type = ["bin"]
 [[example]]
 name = "pwm"
 crate-type = ["bin"]
-
