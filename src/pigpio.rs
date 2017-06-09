@@ -1,7 +1,6 @@
 use std::string::String;
 
 #[link(name = "pigpio", kind = "dylib")]
-#[link(name = "rt", kind = "dylib")]
 extern "C" {
     fn gpioInitialise() -> i32;
     fn gpioTerminate();
