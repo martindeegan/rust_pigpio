@@ -14,8 +14,8 @@ fn main() {
     write(PIN, OFF).unwrap();
     println!("Light off.");
 
-    set_pwm_frequency(PIN, 500); // Set to modulate at 500hz.
-    set_pwm_range(PIN, 1000); // Set range to 1000. 1 range = 2 us;
+    set_pwm_frequency(PIN, 500).unwrap(); // Set to modulate at 500hz.
+    set_pwm_range(PIN, 1000).unwrap(); // Set range to 1000. 1 range = 2 us;
 
     pwm(PIN, 100).unwrap();
     println!("10%");
@@ -25,7 +25,7 @@ fn main() {
     println!("25%");
 
     sleep(Duration::from_secs(2));
-    pwm(PIN, 50).unwrap();
+    pwm(PIN, 500).unwrap();
     println!("50%");
 
     sleep(Duration::from_secs(2));
@@ -41,7 +41,7 @@ fn main() {
     println!("100%");
 
     sleep(Duration::from_secs(2));
-    write(PIN, OFF);
+    write(PIN, OFF).unwrap();
     println!("Light off.");
 
     terminate();
