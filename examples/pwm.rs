@@ -2,7 +2,7 @@ extern crate rust_pigpio;
 
 use std::thread::sleep;
 use std::time::Duration;
-use rust_pigpio::pigpio::*;
+use rust_pigpio::pwm::*;
 
 const PIN: u32 = 21;
 

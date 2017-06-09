@@ -21,4 +21,3 @@ crate-type = ["bin"]
 [[example]]
 name = "pwm"
 crate-type = ["bin"]
-
