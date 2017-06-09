@@ -10,10 +10,10 @@ fn main() {
   set_mode(PIN, OUTPUT).unwrap();
   write(PIN, ON).unwrap();
   sleep(std::time::Duration::from_secs(1));
-  write(PIN, ON).unwrap();
+  write(PIN, OFF).unwrap();
   sleep(std::time::Duration::from_secs(1));
   write(PIN, ON).unwrap();
   sleep(std::time::Duration::from_secs(1));
-  write(PIN, ON).unwrap();
+  write(PIN, OFF).unwrap();
   terminate();
 }
