@@ -1,18 +1,6 @@
 use GpioResult;
 use GpioResponse;
-
-const OK: i32 = 0;
-const BAD_USER_GPIO: i32 = -2;
-const BAD_GPIO: i32 = -3;
-const BAD_PULSEWIDTH: i32 = -7;
-const BAD_DUTYCYCLE: i32 = -8;
-const BAD_DUTYRANGE: i32 = -21;
-const NOT_SERIAL_GPIO: i32 = -38;
-const NOT_PWM_GPIO: i32 = -92;
-const NOT_SERVO_GPIO: i32 = -93;
-
-const DEFAULT_ERROR: &str = "Unknown error.";
-
+use super::lib_constants::*;
 
 #[link(name = "pigpio", kind = "dylib")]
 extern "C" {
@@ -86,7 +74,7 @@ pub fn servo(user_gpio: u32, pulse_width: u32) -> GpioResult {
 /// Returns the servo pulsewidth setting for the GPIO.
 pub fn get_servo_pulse_width(user_gpio: u32) -> GpioResponse {
     let result = unsafe { gpioGetServoPulsewidth(user_gpio) };
-    match  result {
+    match result {
         BAD_USER_GPIO => Err("Bad user gpio".to_string()),
         NOT_SERIAL_GPIO => Err("Not server gpio".to_string()),
         _ => Ok(result as u32),
@@ -103,7 +91,7 @@ pub fn set_pwm_range(user_gpio: u32, range: u32) -> GpioResponse {
     match result {
         BAD_USER_GPIO => Err("Bad user gpio".to_string()),
         BAD_DUTYRANGE => Err("Bad range".to_string()),
-        _ => Ok(result as u32)
+        _ => Ok(result as u32),
     }
 }
 
