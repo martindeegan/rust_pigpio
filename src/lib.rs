@@ -8,7 +8,7 @@
 //! The Rust wrapper of the C library functions
 pub mod pwm;
 pub mod constants;
-pub mod servo;
+pub mod serial;
 mod lib_constants;
 
 use std::string::String;
