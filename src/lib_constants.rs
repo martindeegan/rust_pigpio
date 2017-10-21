@@ -14,5 +14,6 @@ pub const GPIO_IN_USE: i32 = -50;
 pub const NOT_PWM_GPIO: i32 = -92;
 pub const NOT_SERVO_GPIO: i32 = -93;
 pub const BAD_DATABITS: i32 = -101;
+pub const BAD_SER_INVERT: i32 = -121;
 
 pub const DEFAULT_ERROR: &str = "Unknown error.";

@@ -14,6 +14,9 @@ name = "rust_pigpio"
 crate-type = ["lib"]
 doc = true
 
+[dependencies]
+serial-core = "0.4"
+
 [[example]]
 name = "light"
 crate-type = ["bin"]

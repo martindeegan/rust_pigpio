@@ -6,6 +6,9 @@
 //! #Rust PiGPIO
 //!
 //! The Rust wrapper of the C library functions
+
+extern crate serial_core;
+
 pub mod pwm;
 pub mod constants;
 pub mod serial;
