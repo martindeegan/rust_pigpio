@@ -6,21 +6,18 @@
 //! #Rust PiGPIO
 //!
 //! The Rust wrapper of the C library functions
+
+extern crate serial_core;
+
 pub mod pwm;
 pub mod constants;
+pub mod serial;
+mod lib_constants;
 
 use std::string::String;
 
 use constants::*;
-
-const OK: i32 = 0;
-const INIT_FAILED: i32 = -1;
-const BAD_USER_GPIO: i32 = -2;
-const BAD_GPIO: i32 = -3;
-const BAD_MODE: i32 = -4;
-const BAD_LEVEL: i32 = -5;
-const BAD_PUD: i32 = -6;
-const DEFAULT_ERROR: &str = "Unknown error.";
+use lib_constants::*;
 
 pub const INPUT: GpioMode = GpioMode::INPUT;
 pub const OUTPUT: GpioMode = GpioMode::OUTPUT;
@@ -44,8 +41,8 @@ extern "C" {
 
     fn gpioDelay(micros: u32) -> u32;
 
-//    fn gpioSetAlertFunc(user_gpio: u32, f: gpioAlertFunc_t) -> i32;
-//    fn gpioSetAlertFuncEx(user_gpio: u32, f: gpioAlertFuncEx_t, void* userdata) -> i32;
+    //    fn gpioSetAlertFunc(user_gpio: u32, f: gpioAlertFunc_t) -> i32;
+    //    fn gpioSetAlertFuncEx(user_gpio: u32, f: gpioAlertFuncEx_t, void* userdata) -> i32;
 
     fn gpioTrigger(user_gpio: u32, pulseLen: u32, level: u32) -> i32; //
     fn gpioSetWatchdog(user_gpio: u32, timeout: u32) -> i32; //
@@ -61,7 +58,7 @@ pub fn initialize() -> GpioResponse {
     let result = unsafe { gpioInitialise() };
     match result {
         INIT_FAILED => Err("Initialize failed".to_string()),
-        _ => Ok(result as u32)
+        _ => Ok(result as u32),
     }
 
 }
@@ -99,7 +96,7 @@ pub fn set_pull_up_down(gpio: u32, pud: Pud) -> GpioResult {
         OK => Ok(()),
         BAD_GPIO => Err("Bad gpio".to_string()),
         BAD_PUD => Err("Bad pud".to_string()),
-        _ => Err(DEFAULT_ERROR.to_string())
+        _ => Err(DEFAULT_ERROR.to_string()),
     }
 }
 
