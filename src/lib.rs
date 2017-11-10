@@ -51,80 +51,83 @@ extern "C" {
     fn gpioSetWatchdog(user_gpio: u32, timeout: u32) -> i32; //
 }
 
-
-
-
-/// Initializes the library.
-///
-/// Initialize must be called before using the other library functions with some exceptions not yet wrapped.
-pub fn initialize() -> GpioResponse {
-    let result = unsafe { gpioInitialise() };
-    match result {
-        INIT_FAILED => Err("Initialize failed".to_string()),
-        _ => Ok(result as u32)
-    }
-
+#[derive(Debug)]
+pub struct Pigpio {
+    pub version: i32,
 }
 
-/// Terminates the library.
-///
-/// Call before program exit.
-/// This function resets the used DMA channels, releases memory, and terminates any running threads.
-pub fn terminate() {
-    unsafe { gpioTerminate() };
-}
-
-/// Sets the GPIO mode, typically input or output.
-pub fn set_mode(gpio: u32, mode: GpioMode) -> GpioResult {
-    match unsafe { gpioSetMode(gpio, mode as u32) } {
-        OK => Ok(()),
-        BAD_GPIO => Err("Bad gpio".to_string()),
-        BAD_MODE => Err("Bad mode".to_string()),
-        _ => Err(DEFAULT_ERROR.to_string()),
+impl Drop for Pigpio {
+    /// Terminates the library.
+    ///
+    /// This function resets the used DMA channels, releases memory, and terminates any running threads.
+    fn drop(&mut self) {
+        unsafe { gpioTerminate() };
     }
 }
 
-/// Gets the GPIO mode.
-pub fn get_mode(gpio: u32) -> GpioResponse {
-    let response = unsafe { gpioGetMode(gpio) };
-    match response {
-        BAD_GPIO => Err("Bad gpio".to_string()),
-        _ => Ok(response as u32),
-    }
-}
+impl Pigpio {
+    /// Initializes the library.
+    pub fn new() -> Result<Pigpio, &'static str> {
+        let result = unsafe { gpioInitialise() };
+        match result {
+            INIT_FAILED => Err("Initialize failed"),
+            _ => Ok(Pigpio{ version: result })
+        }
 
-/// Sets or clears resistor pull ups or downs on the GPIO.
-pub fn set_pull_up_down(gpio: u32, pud: Pud) -> GpioResult {
-    match unsafe { gpioSetPullUpDown(gpio, pud as u32) } {
-        OK => Ok(()),
-        BAD_GPIO => Err("Bad gpio".to_string()),
-        BAD_PUD => Err("Bad pud".to_string()),
-        _ => Err(DEFAULT_ERROR.to_string())
     }
-}
 
-/// Reads the GPIO level, on or off.
-pub fn read(gpio: u32) -> GpioResponse {
-    match unsafe { gpioRead(gpio) } {
-        1 => Ok(1),
-        0 => Ok(0),
-        BAD_GPIO => Err("Bad gpio".to_string()),
-        _ => Err(DEFAULT_ERROR.to_string()),
+    /// Sets the GPIO mode, typically input or output.
+    pub fn set_mode(&self, gpio: u32, mode: GpioMode) -> GpioResult {
+        match unsafe { gpioSetMode(gpio, mode as u32) } {
+            OK => Ok(()),
+            BAD_GPIO => Err("Bad gpio".to_string()),
+            BAD_MODE => Err("Bad mode".to_string()),
+            _ => Err(DEFAULT_ERROR.to_string()),
+        }
     }
-}
 
-/// Sets the GPIO level, on or off.
-/// If PWM or servo pulses are active on the GPIO they are switched off.
-pub fn write(gpio: u32, level: Level) -> GpioResult {
-    match unsafe { gpioWrite(gpio, level as u32) } {
-        OK => Ok(()),
-        BAD_GPIO => Err("Bad gpio".to_string()),
-        BAD_LEVEL => Err("Bad level".to_string()),
-        _ => Err(DEFAULT_ERROR.to_string()),
+    /// Gets the GPIO mode.
+    pub fn get_mode(&self, gpio: u32) -> GpioResponse {
+        let response = unsafe { gpioGetMode(gpio) };
+        match response {
+            BAD_GPIO => Err("Bad gpio".to_string()),
+            _ => Ok(response as u32),
+        }
     }
-}
 
-/// Delays for at least the number of microseconds specified by microseconds.
-pub fn delay(microseconds: u32) -> u32 {
-    unsafe { gpioDelay(microseconds) }
+    /// Sets or clears resistor pull ups or downs on the GPIO.
+    pub fn set_pull_up_down(&self, gpio: u32, pud: Pud) -> GpioResult {
+        match unsafe { gpioSetPullUpDown(gpio, pud as u32) } {
+            OK => Ok(()),
+            BAD_GPIO => Err("Bad gpio".to_string()),
+            BAD_PUD => Err("Bad pud".to_string()),
+            _ => Err(DEFAULT_ERROR.to_string())
+        }
+    }
+
+    /// Reads the GPIO level, on or off.
+    pub fn read(&self, gpio: u32) -> GpioResponse {
+        match unsafe { gpioRead(gpio) } {
+            1 => Ok(1),
+            0 => Ok(0),
+            BAD_GPIO => Err("Bad gpio".to_string()),
+            _ => Err(DEFAULT_ERROR.to_string()),
+        }
+    }
+
+    /// Sets the GPIO level, on or off.
+    /// If PWM or servo pulses are active on the GPIO they are switched off.
+    pub fn write(&self, gpio: u32, level: Level) -> GpioResult {
+        match unsafe { gpioWrite(gpio, level as u32) } {
+            OK => Ok(()),
+            BAD_GPIO => Err("Bad gpio".to_string()),
+            BAD_LEVEL => Err("Bad level".to_string()),
+            _ => Err(DEFAULT_ERROR.to_string()),
+        }
+    }
+
+    /// Delays for at least the number of microseconds specified by microseconds.
+    pub fn delay(&self, microseconds: u32) -> u32 {
+        unsafe { gpioDelay(microseconds) }
+    }
 }
