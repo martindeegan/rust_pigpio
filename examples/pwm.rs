@@ -8,10 +8,11 @@ use rust_pigpio::pwm::*;
 const PIN: u32 = 21;
 
 fn main() {
-    println!("Initialized pigpio. Version: {}", initialize().unwrap());
-    set_mode(PIN, OUTPUT).unwrap();
+    let pigpio = Pigpio::new().unwrap();
+    println!("Initialized pigpio. Version: {}", pigpio.version);
+    pigpio.set_mode(PIN, OUTPUT).unwrap();
     println!("Mode set!");
-    write(PIN, OFF).unwrap();
+    pigpio.write(PIN, OFF).unwrap();
     println!("Light off.");
 
     set_pwm_frequency(PIN, 500).unwrap(); // Set to modulate at 500hz.
@@ -41,8 +42,6 @@ fn main() {
     println!("100%");
 
     sleep(Duration::from_secs(2));
-    write(PIN, OFF).unwrap();
+    pigpio.write(PIN, OFF).unwrap();
     println!("Light off.");
-
-    terminate();
 }
