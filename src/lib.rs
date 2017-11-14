@@ -44,7 +44,7 @@ extern "C" {
 
     fn gpioDelay(micros: u32) -> u32;
 
-//    fn gpioSetAlertFunc(user_gpio: u32, f: gpioAlertFunc_t) -> i32;
+    fn gpioSetAlertFunc(user_gpio: u32, alert_func: extern fn (u32, u32, u32)) -> i32;
 //    fn gpioSetAlertFuncEx(user_gpio: u32, f: gpioAlertFuncEx_t, void* userdata) -> i32;
 
     fn gpioTrigger(user_gpio: u32, pulseLen: u32, level: u32) -> i32; //
@@ -127,4 +127,14 @@ pub fn write(gpio: u32, level: Level) -> GpioResult {
 /// Delays for at least the number of microseconds specified by microseconds.
 pub fn delay(microseconds: u32) -> u32 {
     unsafe { gpioDelay(microseconds) }
+}
+
+/// Registers a function to be called (a callback) when the specified GPIO changes state
+// http://abyz.me.uk/rpi/pigpio/cif.html#gpioSetAlertFunc
+pub fn set_alert_func(gpio: u32, alert_func: extern fn(u32, u32, u32)) -> GpioResult {
+    match unsafe { gpioSetAlertFunc(gpio, alert_func)} {
+        OK => Ok(()),
+        BAD_USER_GPIO => Err("Bad user gpio".to_string()),
+        _ => Err(DEFAULT_ERROR.to_string()),
+    }
 }
