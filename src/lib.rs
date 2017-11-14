@@ -131,3 +131,27 @@ impl Pigpio {
         unsafe { gpioDelay(microseconds) }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn set_gpio_mode_before_init_should_fail() {
+        let response = unsafe { gpioSetMode(8, INPUT as u32) };
+
+        assert_ne!(0, response);
+    }
+
+   #[test]
+   fn set_mode_after_drop_should_fail() {
+       {
+           let pigpio = Pigpio::new().unwrap();
+           pigpio.set_mode(8, INPUT).unwrap();
+       }
+
+       let response = unsafe { gpioSetMode(8, INPUT as u32) };
+
+       assert_ne!(0, response);
+   }
+}
