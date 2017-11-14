@@ -67,10 +67,10 @@ impl Drop for Pigpio {
 
 impl Pigpio {
     /// Initializes the library.
-    pub fn new() -> Result<Pigpio, &'static str> {
+    pub fn new() -> Result<Pigpio, Stting> {
         let result = unsafe { gpioInitialise() };
         match result {
-            INIT_FAILED => Err("Initialize failed"),
+            INIT_FAILED => Err("Initialize failed".to_string()),
             _ => Ok(Pigpio{ version: result })
         }
 
