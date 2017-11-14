@@ -154,4 +154,12 @@ mod tests {
 
        assert_ne!(0, response);
    }
+
+   #[test]
+   fn second_new_pigpio_should_fail() {
+      Pigpio::new().unwrap();
+      let pigpio = Pigpio::new();
+
+      assert!(true, pigpio.is_err());
+   }
 }
