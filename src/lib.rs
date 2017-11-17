@@ -31,6 +31,9 @@ pub const OFF: Level = Level::OFF;
 pub type GpioResult = Result<(), String>;
 pub type GpioResponse = Result<u32, String>;
 
+#[cfg(test)]
+static mut DROP_CALLED: u32 = 0;
+
 #[link(name = "pigpio", kind = "dylib")]
 extern "C" {
     fn gpioInitialise() -> i32;
@@ -60,8 +63,17 @@ impl Drop for Pigpio {
     /// Terminates the library.
     ///
     /// This function resets the used DMA channels, releases memory, and terminates any running threads.
+    #[cfg(not(test))]
     fn drop(&mut self) {
         unsafe { gpioTerminate() };
+    }
+
+    #[cfg(test)]
+    fn drop(&mut self) {
+        unsafe {
+            gpioTerminate();
+            DROP_CALLED += 1;
+        };
     }
 }
 
@@ -137,29 +149,42 @@ mod tests {
     use super::*;
 
     #[test]
-    fn set_gpio_mode_before_init_should_fail() {
-        let response = unsafe { gpioSetMode(8, INPUT as u32) };
+    fn set_mode_after_drop_should_fail() {
+        unsafe {
+            DROP_CALLED = 0;
+        }
+        {
+            let pigpio = Pigpio::new().unwrap();
+            pigpio.set_mode(8, INPUT).unwrap();
+        }
 
-        assert_ne!(0, response);
+        assert_eq!(1, unsafe { DROP_CALLED });
     }
 
-   #[test]
-   fn set_mode_after_drop_should_fail() {
-       {
-           let pigpio = Pigpio::new().unwrap();
-           pigpio.set_mode(8, INPUT).unwrap();
-       }
+    #[test]
+    fn set_mode_after_panic_fails() {
+        unsafe {
+            DROP_CALLED = 0;
+        }
+        let result = std::panic::catch_unwind(|| {
+            Pigpio::new().unwrap();
+            panic!("panic in program")
+        });
 
-       let response = unsafe { gpioSetMode(8, INPUT as u32) };
+        assert_eq!(true, result.is_err());
+        assert_eq!(1, unsafe { DROP_CALLED });
+    }
 
-       assert_ne!(0, response);
-   }
+    #[test]
+    fn second_new_pigpio_should_also_drop() {
+        {
+            let pigpio = Pigpio::new().unwrap();
+            {
+                Pigpio::new().unwrap();
+            }
+            pigpio.set_mode(8, INPUT).unwrap();
+        }
 
-   #[test]
-   fn second_new_pigpio_should_fail() {
-      Pigpio::new().unwrap();
-      let pigpio = Pigpio::new();
-
-      assert!(true, pigpio.is_err());
-   }
+        assert_eq!(2, unsafe { DROP_CALLED });
+    }
 }
