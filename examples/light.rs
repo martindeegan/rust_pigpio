@@ -6,14 +6,14 @@ const PIN: u32 = 21;
 
 //Turns light on and off
 fn main() {
-  println!("Initialized pigpio. Version: {}", initialize().unwrap());
-  set_mode(PIN, OUTPUT).unwrap();
-  write(PIN, ON).unwrap();
+  let pigpio = Pigpio::new().unwrap();
+  println!("Initialized pigpio. Version: {}", pigpio.version);
+  pigpio.set_mode(PIN, OUTPUT).unwrap();
+  pigpio.write(PIN, ON).unwrap();
   sleep(std::time::Duration::from_secs(1));
-  write(PIN, OFF).unwrap();
+  pigpio.write(PIN, OFF).unwrap();
   sleep(std::time::Duration::from_secs(1));
-  write(PIN, ON).unwrap();
+  pigpio.write(PIN, ON).unwrap();
   sleep(std::time::Duration::from_secs(1));
-  write(PIN, OFF).unwrap();
-  terminate();
+  pigpio.write(PIN, OFF).unwrap();
 }
