@@ -20,3 +20,8 @@ pub enum Level {
     ON = 1,
     OFF = 0
 }
+
+pub enum PiClock {
+    Pwm = 0,
+    Pcm = 1,
+}
