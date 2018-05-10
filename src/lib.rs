@@ -8,6 +8,7 @@
 //! The Rust wrapper of the C library functions
 pub mod pwm;
 pub mod constants;
+pub mod errors;
 
 use std::string::String;
 
@@ -33,6 +34,7 @@ pub type GpioResponse = Result<u32, String>;
 
 #[link(name = "pigpio", kind = "dylib")]
 extern "C" {
+    fn gpioCfgClock(micros: u32, peripheral: u32, source: u32) -> i32;
     fn gpioInitialise() -> i32;
     fn gpioTerminate();
 
@@ -51,8 +53,18 @@ extern "C" {
     fn gpioSetWatchdog(user_gpio: u32, timeout: u32) -> i32; //
 }
 
-
-
+/// Set the sample rate (1, 2, 4, 5, 8, or 10).
+///
+/// Must be called before initialize.
+pub fn set_sample_rate(micros: u32, peripheral: PiClock) -> GpioResult {
+    // source isn't used, so just hard code it.
+    match unsafe { gpioCfgClock(micros, peripheral as u32, 0) } {
+        OK => Ok(()),
+        errors::BAD_CLK_MICROS => Err("Bad micros".to_string()),
+        errors::BAD_CLK_PERIPH => Err("Bad peripheral".to_string()),
+        _ => Err(DEFAULT_ERROR.to_string()),
+    }
+}
 
 /// Initializes the library.
 ///
